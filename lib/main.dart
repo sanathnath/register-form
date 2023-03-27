@@ -91,36 +91,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       borderRadius: BorderRadius.circular(5)),
                 ),
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "enter",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "enter",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintText: "enter",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(5)),
-                ),
-              ),
               // const SizedBox(
               //   height: 120,
               // ),

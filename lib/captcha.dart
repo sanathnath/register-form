@@ -22,83 +22,52 @@ class CaptchaState extends State<Captcha> {
     super.initState();
   }
 
-  void readJS() async {
-    String html = await webViewController.evaluateJavascript(
-        "window.document.getElementsByTagName('body')[1].innerHTML;");
-    print("html: $html");
-  }
-
   @override
   Widget build(BuildContext context) {
-    // setState(() {
-    //   if (token == "") {
-    //     isVerifying = true;
-    //   } else {
-    //     isVerifying = false;
-    //   }
-    // });
-
-    return GestureDetector(
-      behavior: HitTestBehavior.translucent,
-      onTap: () {
-        print("ontap");
-        setState(() {
-          isVerifying = !isVerifying;
-        });
-      },
-      onHorizontalDragUpdate: (updateDetails) {},
+    return Container(
+      width: 330,
+      color: Colors.white,
       child: Container(
-        width: 330,
-        // height: !isVerifying ? 100 : 500,
-        color: Colors.white,
-        child: Column(
-          children: [
-            Container(
-              height: !isVerifying ? 85 : 490,
-              child: WebView(
-                backgroundColor: Colors.white,
-                initialUrl: "https://sample-captcha.netlify.app/",
-                javascriptMode: JavascriptMode.unrestricted,
-                javascriptChannels: Set.from(
-                  [
-                    JavascriptChannel(
-                      name: 'Captcha',
-                      onMessageReceived: (JavascriptMessage message) {
-                        widget.callback(message.message);
-                        setState(() {
-                          isVerifying = false;
-                        });
-                        print("message: ${message.message}");
-                        token = message.message;
-                        print("inside");
-                      },
-                    ),
-                  ],
-                ),
-                onWebViewCreated: (WebViewController w) {
-                  webViewController = w;
-                  w.evaluateJavascript("document.getElementById");
+        height: !isVerifying ? 85 : 490,
+        child: WebView(
+          backgroundColor: Colors.white,
+          initialUrl: "https://sample-captcha.netlify.app/",
+          javascriptMode: JavascriptMode.unrestricted,
+          javascriptChannels: Set.from(
+            [
+              JavascriptChannel(
+                name: 'Captcha',
+                onMessageReceived: (JavascriptMessage message) {
+                  widget.callback(message.message);
+                  setState(() {
+                    isVerifying = false;
+                  });
+                  print("message: ${message.message}");
+                  token = message.message;
+                  print("inside");
                 },
               ),
-            ),
-            GestureDetector(
-              onTap: () {
-                print("tap");
-                setState(() {
-                  isVerifying = !isVerifying;
-                });
-              },
-              child: Container(
-                width: double.infinity,
-                height: 22,
-                child: Center(
-                  child: !isVerifying
-                      ? Icon(Icons.arrow_drop_down)
-                      : Icon(Icons.arrow_drop_up),
-                ),
-              ),
-            ),
-          ],
+              JavascriptChannel(
+                  name: "check",
+                  onMessageReceived: (JavascriptMessage response) {
+                    if (response.message == 'visible') {
+                      print("visible");
+                      setState(() {
+                        isVerifying = true;
+                      });
+                    } else if (response.message == 'hidden') {
+                      print("hidden");
+                      setState(() {
+                        isVerifying = false;
+                      });
+                    }
+                    print(response.message);
+                  })
+            ],
+          ),
+          onWebViewCreated: (WebViewController w) async {
+            webViewController = w;
+          },
         ),
       ),
     );
